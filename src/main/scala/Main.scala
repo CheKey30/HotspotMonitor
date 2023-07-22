@@ -18,20 +18,24 @@ object Main {
   def getRequeset(ps: Int, pn: Int) = {
     val request = HttpRequest(
       method = HttpMethods.GET,
-      uri = s"https://api.bilibili.com/x/web-interface/popular?ps=${ps}&pn=${pn}"
+      uri =
+        s"https://api.bilibili.com/x/web-interface/popular?ps=${ps}&pn=${pn}"
     )
     request
   }
 
-
-  def simpleRequest(ps:Int,pn:Int)= {
-    val responseFuture: Future[HttpResponse] = Http().singleRequest(getRequeset(ps,pn))
-    responseFuture.flatMap(_.entity.toStrict(2 seconds)).map(_.data.utf8String).foreach(println)
+  def simpleRequest(ps: Int, pn: Int) = {
+    val responseFuture: Future[HttpResponse] =
+      Http().singleRequest(getRequeset(ps, pn))
+    responseFuture
+      .flatMap(_.entity.toStrict(2 seconds))
+      .map(_.data.utf8String)
+      .foreach(println)
   }
 
   def main(args: Array[String]): Unit = {
-    for(i<-1 to 20){
-      simpleRequest(20,i)
+    for (i <- 1 to 20) {
+      simpleRequest(20, i)
     }
   }
 }
